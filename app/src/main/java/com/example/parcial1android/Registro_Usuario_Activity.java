@@ -18,6 +18,7 @@ public class Registro_Usuario_Activity extends AppCompatActivity {
     private EditText verificarPassword;
 
     CtlUsuario gestionUsuarios;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

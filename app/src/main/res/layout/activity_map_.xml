@@ -18,43 +18,53 @@
     <TableRow
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="top|center_vertical">
-
-        <Button
-            android:id="@+id/button5"
-            android:layout_width="100dp"
-            android:layout_height="30dp"
-            android:background="@drawable/btn_redondo_azul"
-            android:text="Buscar"
-            android:textColor="#FFFFFF" />
-
-        <EditText
-            android:id="@+id/txtUbicacion"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:backgroundTint="#2196F3"
-            android:ems="10"
-            android:hint="..."
-            android:inputType="text"
-            android:textColor="#FFFFFF"
-            android:textColorHint="#6C6C6E" />
-    </TableRow>
+        android:gravity="top|center_vertical"/>
 
     <Button
-        android:id="@+id/button8"
+        android:id="@+id/btnListar"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginBottom="90dp"
+        android:background="@drawable/btn_redondo_azul"
+        android:onClick="irAlista"
+        android:text="Ver lista de ubicaciones"
+        android:textColor="#FFFFFF"
+        android:visibility="visible" />
+
+    <Button
+        android:id="@+id/btnSalir"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_alignParentBottom="true"
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
-        android:layout_marginBottom="35dp"
+        android:layout_marginBottom="34dp"
         android:background="@drawable/btn_redondo_azul"
+        android:onClick="salir"
         android:text="Salir"
-        android:textColor="#FFFFFF" />
+        android:textColor="#FFFFFF"
+        android:visibility="visible" />
 
     <Button
-        android:id="@+id/button6"
+        android:id="@+id/btnEditar"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginBottom="154dp"
+        android:background="@drawable/btn_redondo_azul"
+        android:text="Editar"
+        android:textColor="#FFFFFF"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/btnEliminar"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_alignParentStart="false"
@@ -63,7 +73,23 @@
         android:layout_marginRight="50dp"
         android:layout_marginBottom="91dp"
         android:background="@drawable/btn_redondo_azul"
-        android:text="Ver lista de ubicaciones"
-        android:textColor="#FFFFFF" />
+        android:text="Eliminar"
+        android:textColor="#FFFFFF"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/btnAlejar"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginBottom="30dp"
+        android:background="@drawable/btn_redondo_azul"
+        android:onClick="alejar"
+        android:text="Alejar"
+        android:textColor="#FFFFFF"
+        android:visibility="gone" />
 
 </RelativeLayout>

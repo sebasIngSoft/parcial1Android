@@ -40,7 +40,9 @@ public class Conexion extends SQLiteOpenHelper {
                 "id_ubicacion integer primary key AUTOINCREMENT,"+
                 "nombre text, "+
                 "descripcion text,"+
-                "color text,"+
+                "color int,"+
+                "latitud double,"+
+                "longitud double,"+
                 "username_fk text REFERENCES usuario ON DELETE CASCADE" +
                 ")"
         );

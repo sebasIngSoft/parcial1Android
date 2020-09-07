@@ -22,13 +22,16 @@ public class UbicacionDAO {
         ContentValues registro = new ContentValues();
         registro.put("nombre", ubicacion.getNombre());
         registro.put("descripcion", ubicacion.getDescripcion());
+        registro.put("color", ubicacion.getColor());
+        registro.put("latitud", ubicacion.getLatitud());
+        registro.put("longitud", ubicacion.getLongitud());
         registro.put("username_fk", ubicacion.getUsername_fk());
         return conex.ejecutarInsert("ubicacion", registro);
     }
 
     public Ubicacion buscar(String nombre, String username_fk) {
         Ubicacion ubicacion = null;
-        String consulta = "select id_ubicacion, nombre, descripcion, username_fk"
+        String consulta = "select id_ubicacion, nombre, descripcion,color,latitud,longitud, username_fk"
                 + "from ubicacion where "
                 + " nombre = '" + nombre + "' and username_fk='"+username_fk+"'";
         Cursor temp = conex.ejecutarSearch(consulta);
@@ -36,7 +39,7 @@ public class UbicacionDAO {
         if (temp.getCount() > 0) {
             temp.moveToFirst();
             ubicacion = new Ubicacion(temp.getInt(0),
-                    temp.getString(1), temp.getString(2),temp.getString(3));
+                    temp.getString(1), temp.getString(2),Integer.parseInt(temp.getString(3)),Double.parseDouble(temp.getString(4)),Double.parseDouble(temp.getString(5)),temp.getString(6));
         }
         conex.cerrarConexion();
         return ubicacion;
@@ -56,6 +59,9 @@ public class UbicacionDAO {
 
         registro.put("nombre", ubicacion.getNombre());
         registro.put("descripcion", ubicacion.getDescripcion());
+        registro.put("color", ubicacion.getColor());
+        registro.put("latitud", ubicacion.getLatitud());
+        registro.put("longitud", ubicacion.getLongitud());
         registro.put("username_fk", ubicacion.getUsername_fk());
         return conex.ejecutarUpdate(tabla, condicion, registro);
     }
@@ -67,8 +73,8 @@ public class UbicacionDAO {
 
         if(temp.moveToFirst()){
             do{
-                Ubicacion ubicacion = new Ubicacion(temp.getInt(0), temp.getString(1),
-                        temp.getString(2),temp.getString(3));
+                Ubicacion ubicacion = new Ubicacion(temp.getInt(0),
+                        temp.getString(1), temp.getString(2),Integer.parseInt(temp.getString(3)),Double.parseDouble(temp.getString(4)),Double.parseDouble(temp.getString(5)),temp.getString(6));
                 lista.add(ubicacion);
             }while(temp.moveToNext());
         }

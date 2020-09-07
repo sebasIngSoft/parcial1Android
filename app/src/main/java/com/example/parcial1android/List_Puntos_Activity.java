@@ -22,7 +22,7 @@ public class List_Puntos_Activity extends AppCompatActivity {
 
     CtlUbicacion gestionUbicaciones;
     CtlUsuario gestionUsuario;
-    Usuario usuario;
+    private Usuario usuario;
     List<Ubicacion> listaUbicaciones;
     List<String> listaUbicacionesString;
     @Override
@@ -30,11 +30,13 @@ public class List_Puntos_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list__puntos_);
 
+
         listaPuntos = (ListView) findViewById(R.id.lstPuntos);
 
         gestionUbicaciones = new CtlUbicacion(this);
         gestionUsuario = new CtlUsuario(this);
         usuario = gestionUsuario.getUsuario();
+
         if(gestionUbicaciones.listarUbicacionesString(usuario.getUsername()).isEmpty()){
             listaUbicaciones = new ArrayList<>();
             listaUbicacionesString = new ArrayList<>();
@@ -55,10 +57,12 @@ public class List_Puntos_Activity extends AppCompatActivity {
                     public void onItemClick(AdapterView<?> parent, View v, int posicion, long id) {
                         gestionUbicaciones.buscar(listaUbicaciones.get(posicion).getUsername_fk(), listaUbicaciones.get(posicion).getNombre());
                         Intent intent = new Intent(v.getContext(), Map_Activity.class);
+                        intent.putExtra("nombreUbicacion",listaUbicaciones.get(posicion).getNombre());
                         startActivity(intent);
                     }
                 });
     }
+
     public void Mapa(View v){
         Intent intent = new Intent(v.getContext(), Map_Activity.class);
         startActivity(intent);

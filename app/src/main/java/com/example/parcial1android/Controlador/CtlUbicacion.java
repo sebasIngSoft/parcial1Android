@@ -25,8 +25,8 @@ public class CtlUbicacion implements Serializable {
     }
 
     public boolean guardar(int id_ubicacion, String nombre,
-                           String descripcion, String username_fk){
-        Ubicacion ubicacion = new Ubicacion(0, nombre, descripcion,username_fk);
+                           String descripcion,int color,double latitud,double longitud, String username_fk){
+        Ubicacion ubicacion = new Ubicacion(0, nombre, descripcion,color,latitud,longitud,username_fk);
         return dao.guardar(ubicacion);
     }
 
@@ -36,13 +36,13 @@ public class CtlUbicacion implements Serializable {
     }
 
     public boolean eliminar(String username_fk, int id_ubicacion){
-        Ubicacion ubicacion = new Ubicacion(id_ubicacion,"","",username_fk);
+        Ubicacion ubicacion = new Ubicacion(id_ubicacion,"","",0,0,0,username_fk);
         return dao.eliminar(ubicacion);
     }
 
     public boolean modificar(int id_ubicacion, String nombre,
-                             String descripcion, String username_fk){
-        Ubicacion ubicacion = new Ubicacion(id_ubicacion,nombre, descripcion, username_fk);
+                             String descripcion,int color,double latitud,double longitud, String username_fk){
+        Ubicacion ubicacion = new Ubicacion(id_ubicacion,nombre, descripcion,color,latitud,longitud,username_fk);
         return dao.modificar(ubicacion);
     }
 
