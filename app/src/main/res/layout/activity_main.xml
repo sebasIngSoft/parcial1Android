@@ -62,6 +62,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginRight="30dp"
             android:background="@drawable/btn_redondo_white"
+            android:onClick="Ingresar"
             android:text="Login"
             android:textColor="#070707" />
 
@@ -73,6 +74,7 @@
             android:layout_marginTop="15dp"
             android:layout_marginRight="30dp"
             android:background="@drawable/btn_redondo_azul"
+            android:onClick="Registrarse"
             android:text="Registrarse"
             android:textColor="#FFFFFF" />
 

@@ -28,7 +28,7 @@
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/txtUsuario"
+            android:id="@+id/txtNombre"
             android:layout_width="295dp"
             android:layout_height="42dp"
             android:layout_marginLeft="50dp"
@@ -37,13 +37,13 @@
             android:layout_marginBottom="30dp"
             android:backgroundTint="#2196F3"
             android:ems="10"
-            android:hint="Ingrese Su Usuario"
+            android:hint="Ingrese su nombre"
             android:inputType="textPersonName"
             android:textColor="#FFFFFF"
             android:textColorHint="#6C6C6E" />
 
         <EditText
-            android:id="@+id/txtNombre"
+            android:id="@+id/txtApellido"
             android:layout_width="295dp"
             android:layout_height="42dp"
             android:layout_marginLeft="50dp"
@@ -51,11 +51,24 @@
             android:layout_marginBottom="30dp"
             android:backgroundTint="#2196F3"
             android:ems="10"
-            android:hint="Ingrese Nombre Completo"
+            android:hint="Ingrese su apellido"
             android:inputType="textPersonName"
             android:textColor="#FFFFFF"
             android:textColorHint="#6C6C6E" />
 
+        <EditText
+            android:id="@+id/txtUsername"
+            android:layout_width="295dp"
+            android:layout_height="42dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="30dp"
+            android:backgroundTint="#2196F3"
+            android:ems="10"
+            android:hint="Ingrese un nombre de usuario"
+            android:inputType="textPassword"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#6C6C6E" />
         <EditText
             android:id="@+id/txtPassword"
             android:layout_width="295dp"
@@ -85,13 +98,25 @@
             android:textColorHint="#6C6C6E" />
 
         <Button
-            android:id="@+id/button7"
+            android:id="@+id/btnRegistrarUsuario"
             android:layout_width="199dp"
             android:layout_height="40dp"
             android:layout_marginLeft="100dp"
             android:layout_marginTop="40dp"
             android:background="@drawable/btn_redondo_azul"
+            android:onClick="RegistrarUsuario"
             android:text="Registrarse"
             android:textColor="#FFFFFF" />
+
+        <Button
+            android:id="@+id/btnLogin"
+            android:layout_width="199dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/btn_redondo_white"
+            android:onClick="RegresarLogin"
+            android:text="INICIO"
+            android:textColor="#120D0D" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

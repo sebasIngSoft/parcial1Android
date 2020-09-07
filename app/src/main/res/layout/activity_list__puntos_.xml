@@ -14,7 +14,7 @@
         android:layout_height="48dp"
         android:background="#03A9F4"
         android:gravity="center"
-        android:text="Registrar Datos Personales"
+        android:text="Ubicaciones"
         android:textColor="#020202"
         android:textSize="24sp"
         android:textStyle="bold" />
@@ -29,13 +29,14 @@
     </ListView>
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/btnMapa"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginLeft="50dp"
         android:layout_marginTop="5dp"
         android:layout_marginRight="50dp"
         android:background="@drawable/btn_redondo_azul"
-        android:text="Atras"
+        android:onClick="Mapa"
+        android:text="Mapa"
         android:textColor="#FFFFFF" />
 </LinearLayout>
