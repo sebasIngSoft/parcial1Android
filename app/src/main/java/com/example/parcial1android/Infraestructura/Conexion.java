@@ -32,7 +32,6 @@ public class Conexion extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("create table usuario(" +
                 "nombre text, "+
-                "apellido text," +
                 "username text primary key,"+
                 "password text"+
                 ")"
@@ -41,6 +40,7 @@ public class Conexion extends SQLiteOpenHelper {
                 "id_ubicacion integer primary key AUTOINCREMENT,"+
                 "nombre text, "+
                 "descripcion text,"+
+                "color text,"+
                 "username_fk text REFERENCES usuario ON DELETE CASCADE" +
                 ")"
         );
