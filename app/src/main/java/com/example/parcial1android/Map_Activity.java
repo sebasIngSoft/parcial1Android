@@ -125,7 +125,7 @@ public class Map_Activity extends FragmentActivity implements OnMapReadyCallback
     public void alejar(View view){
         mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.resetMinMaxZoomPreference();
-
+        btnListar.setVisibility(View.VISIBLE);btnSalir.setVisibility(View.VISIBLE);btnEditar.setVisibility(View.GONE);btnEliminar.setVisibility(View.GONE);btnAlejar.setVisibility(View.GONE);
     }
 
     public void salir(View view){
