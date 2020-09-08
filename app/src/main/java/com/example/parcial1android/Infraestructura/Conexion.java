@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.Nullable;
 
 public class Conexion extends SQLiteOpenHelper {
-    private static final String database = "UbicacionesMapa.db";
+    private static final String database = "UbicacionesMapa20.db";
     /*Para manipular el registro que retorna la BD*/
     private static final SQLiteDatabase.CursorFactory factory = null;
     private static final int version = 1;
@@ -32,6 +32,7 @@ public class Conexion extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("create table usuario(" +
                 "nombre text, "+
+                "apellido text,"+
                 "username text primary key,"+
                 "password text"+
                 ")"

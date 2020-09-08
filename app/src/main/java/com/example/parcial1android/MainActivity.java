@@ -19,10 +19,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         txtUsername = (EditText) findViewById(R.id.txtUsuario);
         txtPassword = (EditText) findViewById(R.id.txtPassword);
-
         gestionUsuarios = new CtlUsuario(this);
     }
 
@@ -33,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
             if(gestionUsuarios.buscar(username,password)!=null){
                 Intent intent = new Intent(this , Map_Activity.class);
                 startActivity(intent);
+                finish();
             }else{
                 Toast.makeText(getApplicationContext(), "Usuario o contraseña incorrectos!", Toast.LENGTH_SHORT).show();
             }

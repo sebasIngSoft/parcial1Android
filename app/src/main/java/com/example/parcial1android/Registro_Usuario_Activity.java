@@ -29,7 +29,6 @@ public class Registro_Usuario_Activity extends AppCompatActivity {
         username = (EditText) findViewById(R.id.txtUsername);
         password = (EditText) findViewById(R.id.txtPassword);
         verificarPassword = (EditText) findViewById(R.id.txtValidarPassword);
-
         gestionUsuarios = new CtlUsuario(this);
     }
 
@@ -60,7 +59,7 @@ public class Registro_Usuario_Activity extends AppCompatActivity {
          }
     }
     public void RegresarLogin(View v){
-        Intent intent = new Intent(this, Map_Activity.class);
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 }

@@ -19,6 +19,7 @@ import android.widget.EditText;
 import com.example.parcial1android.Controlador.CtlUbicacion;
 import com.example.parcial1android.Controlador.CtlUsuario;
 import com.example.parcial1android.Modelo.Ubicacion;
+import com.example.parcial1android.Modelo.Usuario;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -35,13 +36,14 @@ import java.util.List;
 public class Map_Activity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener, SensorEventListener {
 
     private GoogleMap mMap;
-    private String username,nombreUbicacion;
+    private String nombreUbicacion;
     private float zoom;
 
     Button btnSalir,btnEliminar,btnEditar,btnListar,btnAlejar;
     Sensor s;
     SensorManager sensorM;
 
+    Usuario usuario;
     private EditText txtUbicacion;
     float[] colores;
     CtlUbicacion ctlUbicacion;
@@ -53,7 +55,11 @@ public class Map_Activity extends FragmentActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_map_);
 
         Bundle bundle = getIntent().getExtras();
-        nombreUbicacion = bundle.getString("nombreUbicacion");
+        try{
+            nombreUbicacion = bundle.getString("nombreUbicacion");
+        }catch (Exception e){
+
+        }
 
 
         colores = new float[]{60.0f, 210.0f, 240.0f, 180.0f, 120.0f, 300.0f, 30.0f, 0.0f, 330.0f, 270.0f};
@@ -61,7 +67,7 @@ public class Map_Activity extends FragmentActivity implements OnMapReadyCallback
         ctlUsuario = new CtlUsuario(this);
         ctlUbicacion = new CtlUbicacion(this);
 
-        username = ctlUsuario.getUsuario().getUsername();
+        usuario = ctlUsuario.getUsuario();
         btnSalir = (Button) findViewById(R.id.btnSalir);
         btnEditar = (Button) findViewById(R.id.btnEditar);
         btnEliminar = (Button) findViewById(R.id.btnEliminar);
@@ -74,15 +80,24 @@ public class Map_Activity extends FragmentActivity implements OnMapReadyCallback
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        try{
+            mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+        }catch (Exception e){
 
-        mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+        }
+
 
         /*Cuando llega de lista puntos*/
-        if(!nombreUbicacion.equals("")){
-            Ubicacion ubicacion = ctlUbicacion.buscar(ctlUsuario.getUsuario().getUsername(),nombreUbicacion);
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(ubicacion.getLatitud(),ubicacion.getLongitud()),10));
-            mMap.getUiSettings().setZoomControlsEnabled(false);
-            btnListar.setVisibility(View.GONE);btnSalir.setVisibility(View.GONE);btnEditar.setVisibility(View.VISIBLE);btnEliminar.setVisibility(View.VISIBLE);btnAlejar.setVisibility(View.VISIBLE);
+        try{
+            if(!nombreUbicacion.equals("")){
+                Ubicacion ubicacion = ctlUbicacion.buscar(ctlUsuario.getUsuario().getUsername(),nombreUbicacion);
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(ubicacion.getLatitud(),ubicacion.getLongitud()),10));
+                mMap.getUiSettings().setZoomControlsEnabled(false);
+                btnListar.setVisibility(View.GONE);btnSalir.setVisibility(View.GONE);btnEditar.setVisibility(View.VISIBLE);btnEliminar.setVisibility(View.VISIBLE);btnAlejar.setVisibility(View.VISIBLE);
+            }
+
+        }catch (Exception e){
+
         }
 
     }
@@ -99,8 +114,11 @@ public class Map_Activity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        listaUbicaciones =  ctlUbicacion.listaUbicacionesUsuario(username);
-        mMap.getUiSettings().setCompassEnabled(true);// visualizar la brujula
+        listaUbicaciones =  ctlUbicacion.listaUbicacionesUsuario(usuario.getUsername());
+        try{
+            mMap.getUiSettings().setCompassEnabled(true);// visualizar la brujula
+        }catch (Exception e){
+        }
         for (int i = 0; i < listaUbicaciones.size();i++){
             for (int x = 0; x < colores.length;x++){
                 if(listaUbicaciones.get(i).getColor()==colores[x]){
@@ -111,7 +129,11 @@ public class Map_Activity extends FragmentActivity implements OnMapReadyCallback
                 }
             }
         }
-        mMap.setOnMapClickListener(this);// se asigna el lister asignado al
+        try{
+            mMap.setOnMapClickListener(this);// se asigna el lister asignado al
+        }catch (Exception e){
+
+        }
         // metodo onMapClick del mapa
     }
 
@@ -119,7 +141,7 @@ public class Map_Activity extends FragmentActivity implements OnMapReadyCallback
     // marcador
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
-
+        guardarUbicacion();
     }
 
     public void alejar(View view){
@@ -129,7 +151,8 @@ public class Map_Activity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public void salir(View view){
-        System.exit(0);
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 
     public void irAlista(View view){
