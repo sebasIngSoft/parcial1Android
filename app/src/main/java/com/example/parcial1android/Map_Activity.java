@@ -201,4 +201,8 @@ public class Map_Activity extends FragmentActivity implements OnMapReadyCallback
         }
         return false;
     }
+    public void editar(View v){
+        Intent intent = new Intent(this, RegistroPunto_Activity.class);
+        startActivity(intent);
+    }
 }

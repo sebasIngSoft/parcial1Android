@@ -59,6 +59,7 @@
         android:layout_marginRight="50dp"
         android:layout_marginBottom="154dp"
         android:background="@drawable/btn_redondo_azul"
+        android:onClick="editar"
         android:text="Editar"
         android:textColor="#FFFFFF"
         android:visibility="gone" />

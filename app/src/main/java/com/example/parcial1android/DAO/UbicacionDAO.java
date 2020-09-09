@@ -32,7 +32,7 @@ public class UbicacionDAO {
     public Ubicacion buscar(String nombre, String username_fk) {
         Ubicacion ubicacion = null;
         String consulta = "select id_ubicacion, nombre, descripcion,color,latitud,longitud, username_fk"
-                + "from ubicacion where "
+                + " from ubicacion where "
                 + " nombre = '" + nombre + "' and username_fk='"+username_fk+"'";
         Cursor temp = conex.ejecutarSearch(consulta);
 
@@ -96,7 +96,7 @@ public class UbicacionDAO {
     public Ubicacion buscarPorLongitudLatitud(double longitud, double latitud) {
         Ubicacion ubicacion = null;
         String consulta = "select id_ubicacion, nombre, descripcion,color,latitud,longitud, username_fk"
-                + "from ubicacion where "
+                + " from ubicacion where "
                 + " latitud = " + latitud + " and longitud="+longitud+"";
         Cursor temp = conex.ejecutarSearch(consulta);
 
