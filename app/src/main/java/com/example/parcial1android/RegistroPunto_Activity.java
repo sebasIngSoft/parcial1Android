@@ -12,17 +12,17 @@ import android.widget.Toast;
 
 import com.example.parcial1android.Controlador.CtlUbicacion;
 import com.example.parcial1android.Controlador.CtlUsuario;
+import com.example.parcial1android.Modelo.Ubicacion;
 
 import java.util.ArrayList;
 
 public class RegistroPunto_Activity extends AppCompatActivity {
-    private double latitud;
-    private double longitud;
-    private String username;
+
     private EditText txtNombrePunto,txtDescripcion;
     private Spinner spnColor;
     CtlUbicacion ctlUbicacion;
     CtlUsuario ctlUsuario;
+    Ubicacion clsUbicacion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +30,7 @@ public class RegistroPunto_Activity extends AppCompatActivity {
         setContentView(R.layout.activity_registro_punto_);
 
         Bundle bundle = getIntent().getExtras();
-        latitud = bundle.getDouble("latitud");
-        longitud = bundle.getDouble("longitud");
+        clsUbicacion = (Ubicacion) bundle.getSerializable("clsUbicacion");
 
         ctlUbicacion = new CtlUbicacion(this);
         ctlUsuario = new CtlUsuario(this);
@@ -49,13 +48,19 @@ public class RegistroPunto_Activity extends AppCompatActivity {
     }
 
     public void registrar(View view){
-        if (txtNombrePunto.getText().equals("") || txtDescripcion.getText().equals("")){
+        if (txtNombrePunto.getText().toString().equals("") || txtDescripcion.getText().toString().equals("")){
             Toast.makeText(this,"Por favor complete los campos",Toast.LENGTH_SHORT).show();
         }else{
-            if (ctlUbicacion.guardar(0,txtNombrePunto.getText().toString(),txtDescripcion.getText().toString(),spnColor.getSelectedItemPosition(),latitud,longitud,ctlUsuario.getUsuario().getUsername())){
+            clsUbicacion.setNombre(txtNombrePunto.getText().toString());
+            clsUbicacion.setDescripcion(txtDescripcion.getText().toString());
+            clsUbicacion.setColor(spnColor.getSelectedItemPosition());
+
+            if (ctlUbicacion.guardarObjeto(clsUbicacion)){
                 Toast.makeText(this,"Registro Exitoso",Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(this, Map_Activity.class);
                 startActivity(intent);
+            }else{
+                Toast.makeText(this,"No sea completado el registro",Toast.LENGTH_SHORT).show();
             }
         }
     }

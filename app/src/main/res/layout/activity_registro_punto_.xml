@@ -61,19 +61,18 @@
             android:layout_width="295dp"
             android:layout_height="45dp"
             android:layout_marginLeft="50dp"
-            android:backgroundTint="#2196F3"
-            android:foregroundTint="#F8F8F8" />
+            android:background="#6A6A6A" />
 
         <Button
-            android:id="@+id/button7"
-            android:layout_width="199dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="100dp"
-            android:layout_marginTop="50dp"
+            android:id="@+id/button3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="50dp"
             android:background="@drawable/btn_redondo_azul"
             android:onClick="registrar"
-            android:text="Guardar"
-            android:textColor="#FFFFFF" />
+            android:text="Button" />
 
     </LinearLayout>
 

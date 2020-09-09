@@ -80,12 +80,6 @@ public class Map_Activity extends FragmentActivity implements OnMapReadyCallback
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        try{
-            mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
-        }catch (Exception e){
-
-        }
-
 
         /*Cuando llega de lista puntos*/
         try{
@@ -106,19 +100,22 @@ public class Map_Activity extends FragmentActivity implements OnMapReadyCallback
     public void onMapClick(LatLng coordenadas) {
         // Recibe por parametro la posicion exacta donde se pulso y añade un
         // marcador
+        Ubicacion ubicacion = new Ubicacion(0,"","",0,coordenadas.latitude,coordenadas.longitude,usuario.getUsername());
+        mMap.addMarker(new MarkerOptions().position(new LatLng(ubicacion.getLatitud(),ubicacion.getLongitud())).icon(
+                BitmapDescriptorFactory
+                        .defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)).title("verificando")// titulo del marcador
+                .snippet("..."));
         Intent intent = new Intent(this, RegistroPunto_Activity.class);
-        intent.putExtra("latitud",coordenadas.latitude);
-        intent.putExtra("longitud",coordenadas.longitude);
+        intent.putExtra("clsUbicacion",ubicacion);
         startActivity(intent);
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
         listaUbicaciones =  ctlUbicacion.listaUbicacionesUsuario(usuario.getUsername());
-        try{
-            mMap.getUiSettings().setCompassEnabled(true);// visualizar la brujula
-        }catch (Exception e){
-        }
+        mMap.getUiSettings().setCompassEnabled(true);// visualizar la brujula
+
         for (int i = 0; i < listaUbicaciones.size();i++){
             for (int x = 0; x < colores.length;x++){
                 if(listaUbicaciones.get(i).getColor()==colores[x]){
@@ -129,11 +126,7 @@ public class Map_Activity extends FragmentActivity implements OnMapReadyCallback
                 }
             }
         }
-        try{
-            mMap.setOnMapClickListener(this);// se asigna el lister asignado al
-        }catch (Exception e){
-
-        }
+        mMap.setOnMapClickListener(this);// se asigna el lister asignado al
         // metodo onMapClick del mapa
     }
 

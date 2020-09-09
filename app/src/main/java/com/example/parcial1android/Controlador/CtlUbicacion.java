@@ -29,6 +29,10 @@ public class CtlUbicacion implements Serializable {
         Ubicacion ubicacion = new Ubicacion(0, nombre, descripcion,color,latitud,longitud,username_fk);
         return dao.guardar(ubicacion);
     }
+    public boolean guardarObjeto(Ubicacion clsUbicacion){
+        Ubicacion ubicacion = clsUbicacion;
+        return dao.guardar(ubicacion);
+    }
 
     public Ubicacion buscar(String username, String nombre){
         ubicacion = dao.buscar(nombre, username);
