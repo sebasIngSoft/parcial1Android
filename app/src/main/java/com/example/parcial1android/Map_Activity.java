@@ -13,6 +13,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -27,13 +28,14 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Map_Activity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener, SensorEventListener {
+public class Map_Activity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener, SensorEventListener, GoogleMap.OnMarkerClickListener {
 
     private GoogleMap mMap;
     private String nombreUbicacion;
@@ -44,6 +46,7 @@ public class Map_Activity extends FragmentActivity implements OnMapReadyCallback
     SensorManager sensorM;
 
     Usuario usuario;
+    Ubicacion recibirUbicacion;
     private EditText txtUbicacion;
     float[] colores;
     CtlUbicacion ctlUbicacion;
@@ -55,9 +58,9 @@ public class Map_Activity extends FragmentActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_map_);
 
         Bundle bundle = getIntent().getExtras();
-        try{
+        try {
             nombreUbicacion = bundle.getString("nombreUbicacion");
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
 
@@ -68,6 +71,7 @@ public class Map_Activity extends FragmentActivity implements OnMapReadyCallback
         ctlUbicacion = new CtlUbicacion(this);
 
         usuario = ctlUsuario.getUsuario();
+        recibirUbicacion = ctlUbicacion.getUbicacion();
         btnSalir = (Button) findViewById(R.id.btnSalir);
         btnEditar = (Button) findViewById(R.id.btnEditar);
         btnEliminar = (Button) findViewById(R.id.btnEliminar);
@@ -122,11 +126,13 @@ public class Map_Activity extends FragmentActivity implements OnMapReadyCallback
                     mMap.addMarker(new MarkerOptions().position(new LatLng(listaUbicaciones.get(i).getLatitud(),listaUbicaciones.get(i).getLongitud())).icon(
                             BitmapDescriptorFactory
                                     .defaultMarker(colores[x])).title(listaUbicaciones.get(i).getNombre())// titulo del marcador
-                            .snippet(listaUbicaciones.get(i).getDescripcion()));
+                            .snippet(listaUbicaciones.get(i).getDescripcion())
+                            .visible(true));
                 }
             }
         }
         mMap.setOnMapClickListener(this);// se asigna el lister asignado al
+        mMap.setOnMarkerClickListener(this);
         // metodo onMapClick del mapa
     }
 
@@ -180,5 +186,19 @@ public class Map_Activity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onAccuracyChanged(Sensor sensor, int i) {
 
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        System.out.println(" Titulo:" +marker.getTitle());
+        if(ctlUbicacion.buscar(usuario.getUsername(),marker.getTitle())!=null){
+            btnEditar.setVisibility(View.VISIBLE);
+            btnEliminar.setVisibility(View.VISIBLE);
+            btnAlejar.setVisibility(View.VISIBLE);
+            btnListar.setVisibility(View.GONE);
+            btnSalir.setVisibility(View.GONE);
+            return true;
+        }
+        return false;
     }
 }

@@ -57,7 +57,6 @@ public class List_Puntos_Activity extends AppCompatActivity {
                     public void onItemClick(AdapterView<?> parent, View v, int posicion, long id) {
                         gestionUbicaciones.buscar(listaUbicaciones.get(posicion).getUsername_fk(), listaUbicaciones.get(posicion).getNombre());
                         Intent intent = new Intent(v.getContext(), Map_Activity.class);
-                        intent.putExtra("nombreUbicacion",listaUbicaciones.get(posicion).getNombre());
                         startActivity(intent);
                     }
                 });

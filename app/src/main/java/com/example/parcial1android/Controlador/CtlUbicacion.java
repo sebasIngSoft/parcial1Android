@@ -39,6 +39,11 @@ public class CtlUbicacion implements Serializable {
         return ubicacion;
     }
 
+    public Ubicacion buscarPorLongitudLatitud(double longitud, double latitud){
+        ubicacion = dao.buscarPorLongitudLatitud(longitud, latitud);
+        return ubicacion;
+    }
+
     public boolean eliminar(String username_fk, int id_ubicacion){
         Ubicacion ubicacion = new Ubicacion(id_ubicacion,"","",0,0,0,username_fk);
         return dao.eliminar(ubicacion);

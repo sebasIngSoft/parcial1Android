@@ -92,4 +92,19 @@ public class UbicacionDAO {
         }
         return lista;
     }
+
+    public Ubicacion buscarPorLongitudLatitud(double longitud, double latitud) {
+        Ubicacion ubicacion = null;
+        String consulta = "select id_ubicacion, nombre, descripcion,color,latitud,longitud, username_fk"
+                + "from ubicacion where "
+                + " latitud = " + latitud + " and longitud="+longitud+"";
+        Cursor temp = conex.ejecutarSearch(consulta);
+
+        if (temp.getCount()>0){
+            temp.moveToFirst();
+            ubicacion = new Ubicacion(temp.getInt(0),temp.getString(1),temp.getString(2),temp.getInt(3),temp.getDouble(4),temp.getDouble(5),temp.getString(6));
+        }
+        conex.cerrarConexion();
+        return ubicacion;
+    }
 }
