@@ -65,20 +65,6 @@
         android:visibility="gone" />
 
     <Button
-        android:id="@+id/btnEliminar"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_alignParentStart="false"
-        android:layout_alignParentBottom="true"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp"
-        android:layout_marginBottom="91dp"
-        android:background="@drawable/btn_redondo_azul"
-        android:text="Eliminar"
-        android:textColor="#FFFFFF"
-        android:visibility="gone" />
-
-    <Button
         android:id="@+id/btnAlejar"
         android:layout_width="match_parent"
         android:layout_height="40dp"

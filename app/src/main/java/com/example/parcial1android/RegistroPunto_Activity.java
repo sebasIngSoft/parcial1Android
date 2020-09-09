@@ -21,8 +21,8 @@ public class RegistroPunto_Activity extends AppCompatActivity {
 
     private EditText txtNombrePunto,txtDescripcion;
     private Spinner spnColor;
-    private Button btnEditar;
-    private Button btnGuardar;
+    private Button btnEditar,btnGuardar,btnEliminar;
+
     CtlUbicacion ctlUbicacion;
     CtlUsuario ctlUsuario;
     Ubicacion clsUbicacion;
@@ -33,19 +33,24 @@ public class RegistroPunto_Activity extends AppCompatActivity {
         setContentView(R.layout.activity_registro_punto_);
 
         Bundle bundle = getIntent().getExtras();
-        clsUbicacion = (Ubicacion) bundle.getSerializable("clsUbicacion");
+        try {
+            clsUbicacion = (Ubicacion) bundle.getSerializable("clsUbicacion");
+        }catch (Exception e){}
+
         btnEditar = (Button) findViewById(R.id.btnEditar);
         btnGuardar = (Button) findViewById(R.id.btnGuardar);
+        btnEliminar = (Button) findViewById(R.id.btnEliminar);
 
         ctlUbicacion = new CtlUbicacion(this);
         ctlUsuario = new CtlUsuario(this);
 
 
-        recibirUbicacion = ctlUbicacion.getUbicacion();
+        recibirUbicacion = (Ubicacion) ctlUbicacion.getUbicacion();
         if(recibirUbicacion!=null){
-            cargarDatos();
             btnEditar.setVisibility(View.VISIBLE);
+            btnEliminar.setVisibility(View.VISIBLE);
             btnGuardar.setVisibility(View.GONE);
+            cargarDatos();
         }
         spnColor = (Spinner) findViewById(R.id.spnColor);
         txtNombrePunto = (EditText) findViewById(R.id.txtNombrePunto);
@@ -94,6 +99,9 @@ public class RegistroPunto_Activity extends AppCompatActivity {
             if (ctlUbicacion.modificar(recibirUbicacion.getId_ubicacion(), txtNombrePunto.getText().toString(),txtDescripcion.getText().toString()
             ,spnColor.getSelectedItemPosition(),recibirUbicacion.getLatitud(),recibirUbicacion.getLatitud(), recibirUbicacion.getUsername_fk())){
                 Toast.makeText(this,"Modificacion Exitosa",Toast.LENGTH_SHORT).show();
+                btnEditar.setVisibility(View.GONE);
+                btnEliminar.setVisibility(View.GONE);
+                btnGuardar.setVisibility(View.VISIBLE);
                 Intent intent = new Intent(this, Map_Activity.class);
                 startActivity(intent);
             }else{
@@ -104,6 +112,9 @@ public class RegistroPunto_Activity extends AppCompatActivity {
     public void eliminar(View v){
         if(ctlUbicacion.eliminar(recibirUbicacion.getUsername_fk(),recibirUbicacion.getId_ubicacion())){
             Toast.makeText(this,"Ubicación eliminada con exito.",Toast.LENGTH_SHORT).show();
+            btnEditar.setVisibility(View.GONE);
+            btnEliminar.setVisibility(View.GONE);
+            btnGuardar.setVisibility(View.VISIBLE);
             Intent intent = new Intent(this, Map_Activity.class);
             startActivity(intent);
         }else{

@@ -37,6 +37,6 @@
         android:layout_marginRight="50dp"
         android:background="@drawable/btn_redondo_azul"
         android:onClick="Mapa"
-        android:text="Mapa"
+        android:text="Regresar"
         android:textColor="#FFFFFF" />
 </LinearLayout>

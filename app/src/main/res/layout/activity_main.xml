@@ -78,33 +78,6 @@
             android:text="Registrarse"
             android:textColor="#FFFFFF" />
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="133dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:lineSpacingExtra="8sp"
-            android:longClickable="false"
-            android:nestedScrollingEnabled="false"
-            android:saveEnabled="false"
-            android:scrollHorizontally="false"
-            android:selectAllOnFocus="false"
-            android:text="Crear Usuario"
-            android:textAlignment="center"
-            android:textAllCaps="false"
-            android:textColor="#FFFFFF"
-            android:textIsSelectable="false"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:typeface="normal" />
-
-        <View
-            android:id="@+id/divider"
-            android:layout_width="100dp"
-            android:layout_height="2dp"
-            android:layout_gravity="center"
-            android:background="#03A9F4" />
-
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

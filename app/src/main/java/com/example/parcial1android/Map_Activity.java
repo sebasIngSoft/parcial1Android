@@ -41,13 +41,12 @@ public class Map_Activity extends FragmentActivity implements OnMapReadyCallback
     private String nombreUbicacion;
     private float zoom;
 
-    Button btnSalir,btnEliminar,btnEditar,btnListar,btnAlejar;
+    Button btnSalir,btnEditar,btnListar,btnAlejar;
     Sensor s;
     SensorManager sensorM;
 
     Usuario usuario;
     Ubicacion recibirUbicacion;
-    private EditText txtUbicacion;
     float[] colores;
     CtlUbicacion ctlUbicacion;
     CtlUsuario ctlUsuario;
@@ -57,24 +56,16 @@ public class Map_Activity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map_);
 
-        Bundle bundle = getIntent().getExtras();
-        try {
-            nombreUbicacion = bundle.getString("nombreUbicacion");
-        } catch (Exception e) {
-
-        }
-
-
         colores = new float[]{60.0f, 210.0f, 240.0f, 180.0f, 120.0f, 300.0f, 30.0f, 0.0f, 330.0f, 270.0f};
 
         ctlUsuario = new CtlUsuario(this);
         ctlUbicacion = new CtlUbicacion(this);
+        listaUbicaciones = new ArrayList<>();
 
         usuario = ctlUsuario.getUsuario();
         recibirUbicacion = ctlUbicacion.getUbicacion();
         btnSalir = (Button) findViewById(R.id.btnSalir);
         btnEditar = (Button) findViewById(R.id.btnEditar);
-        btnEliminar = (Button) findViewById(R.id.btnEliminar);
         btnListar = (Button) findViewById(R.id.btnListar);
         btnAlejar = (Button) findViewById(R.id.btnAlejar);
 
@@ -91,9 +82,8 @@ public class Map_Activity extends FragmentActivity implements OnMapReadyCallback
                 Ubicacion ubicacion = ctlUbicacion.buscar(ctlUsuario.getUsuario().getUsername(),nombreUbicacion);
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(ubicacion.getLatitud(),ubicacion.getLongitud()),10));
                 mMap.getUiSettings().setZoomControlsEnabled(false);
-                btnListar.setVisibility(View.GONE);btnSalir.setVisibility(View.GONE);btnEditar.setVisibility(View.VISIBLE);btnEliminar.setVisibility(View.VISIBLE);btnAlejar.setVisibility(View.VISIBLE);
+                btnListar.setVisibility(View.GONE);btnSalir.setVisibility(View.GONE);btnEditar.setVisibility(View.VISIBLE);btnAlejar.setVisibility(View.VISIBLE);
             }
-
         }catch (Exception e){
 
         }
@@ -101,10 +91,39 @@ public class Map_Activity extends FragmentActivity implements OnMapReadyCallback
     }
 
     @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+        mMap.getUiSettings().setCompassEnabled(true);// visualizar la brujula
+        listaUbicaciones =  ctlUbicacion.listaUbicacionesUsuario(usuario.getUsername());
+
+        for (int i = 0; i < listaUbicaciones.size();i++){
+            for (int x = 0; x < colores.length;x++){
+                if(listaUbicaciones.get(i).getColor()==x){
+                    mMap.addMarker(new MarkerOptions().position(new LatLng(listaUbicaciones.get(i).getLatitud(),listaUbicaciones.get(i).getLongitud())).icon(
+                            BitmapDescriptorFactory.defaultMarker(colores[x])).title(listaUbicaciones.get(i).getNombre())// titulo del marcador
+                            .snippet(listaUbicaciones.get(i).getDescripcion())
+                            .visible(true));
+                }
+            }
+        }
+        mMap.setOnMapClickListener(this);// se asigna el lister asignado al
+        // metodo onMapClick del mapa
+        mMap.setOnMarkerClickListener(this);
+    }
+
+    @Override
     public void onMapClick(LatLng coordenadas) {
         // Recibe por parametro la posicion exacta donde se pulso y añade un
         // marcador
-        Ubicacion ubicacion = new Ubicacion(0,"","",0,coordenadas.latitude,coordenadas.longitude,usuario.getUsername());
+        addMarker();
+    }
+
+    public void addMarker() {
+        double latitudMapa = mMap.getCameraPosition().target.latitude;// latitud
+        /* del punto central que se este visualizando*/
+        double altitudMapa = mMap.getCameraPosition().target.longitude; // altitud
+        /* del punto central que se este visualizando*/
+        Ubicacion ubicacion = new Ubicacion(0,"","",0,latitudMapa,altitudMapa,usuario.getUsername());
         mMap.addMarker(new MarkerOptions().position(new LatLng(ubicacion.getLatitud(),ubicacion.getLongitud())).icon(
                 BitmapDescriptorFactory
                         .defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)).title("verificando")// titulo del marcador
@@ -114,39 +133,19 @@ public class Map_Activity extends FragmentActivity implements OnMapReadyCallback
         startActivity(intent);
     }
 
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-        listaUbicaciones =  ctlUbicacion.listaUbicacionesUsuario(usuario.getUsername());
-        mMap.getUiSettings().setCompassEnabled(true);// visualizar la brujula
 
-        for (int i = 0; i < listaUbicaciones.size();i++){
-            for (int x = 0; x < colores.length;x++){
-                if(listaUbicaciones.get(i).getColor()==colores[x]){
-                    mMap.addMarker(new MarkerOptions().position(new LatLng(listaUbicaciones.get(i).getLatitud(),listaUbicaciones.get(i).getLongitud())).icon(
-                            BitmapDescriptorFactory
-                                    .defaultMarker(colores[x])).title(listaUbicaciones.get(i).getNombre())// titulo del marcador
-                            .snippet(listaUbicaciones.get(i).getDescripcion())
-                            .visible(true));
-                }
-            }
-        }
-        mMap.setOnMapClickListener(this);// se asigna el lister asignado al
-        mMap.setOnMarkerClickListener(this);
-        // metodo onMapClick del mapa
-    }
 
     // Recibe por parametro la posicion exacta donde se pulso y añade un
     // marcador
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
-        guardarUbicacion();
+
     }
 
     public void alejar(View view){
         mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.resetMinMaxZoomPreference();
-        btnListar.setVisibility(View.VISIBLE);btnSalir.setVisibility(View.VISIBLE);btnEditar.setVisibility(View.GONE);btnEliminar.setVisibility(View.GONE);btnAlejar.setVisibility(View.GONE);
+        btnListar.setVisibility(View.VISIBLE);btnSalir.setVisibility(View.VISIBLE);btnEditar.setVisibility(View.GONE);btnAlejar.setVisibility(View.GONE);
     }
 
     public void salir(View view){
@@ -159,18 +158,6 @@ public class Map_Activity extends FragmentActivity implements OnMapReadyCallback
         startActivity(intent);
     }
 
-    public void guardarUbicacion(){
-        CameraPosition camPos = mMap.getCameraPosition();
-        LatLng coordenadas = camPos.target;
-        double latitud = coordenadas.latitude;
-        double longitud = coordenadas.longitude;
-
-        mMap.addMarker(new MarkerOptions().position(new LatLng(latitud,longitud)).icon(
-                BitmapDescriptorFactory
-                        .defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)).title("punto X")// titulo del marcador
-                .snippet("Sin informacion"));
-    }
-
 
     /*------- Metodos de los Sensores --------------------------------------------------*/
     //cuando el sensor detecta un cambio
@@ -179,7 +166,11 @@ public class Map_Activity extends FragmentActivity implements OnMapReadyCallback
         float valor = Float.parseFloat(String.valueOf(sensorEvent.values[0]));
 
         if (valor<5){
-            guardarUbicacion();
+            /*CameraPosition camPos = mMap.getCameraPosition();
+            LatLng coordenadas = camPos.target;
+            LatLng pos = new LatLng(coordenadas.latitude, coordenadas.longitude);
+            onMapClick(pos);*/
+            addMarker();
         }
     }
 
@@ -190,13 +181,12 @@ public class Map_Activity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        System.out.println(" Titulo:" +marker.getTitle());
         if(ctlUbicacion.buscar(usuario.getUsername(),marker.getTitle())!=null){
             btnEditar.setVisibility(View.VISIBLE);
-            btnEliminar.setVisibility(View.VISIBLE);
             btnAlejar.setVisibility(View.VISIBLE);
             btnListar.setVisibility(View.GONE);
             btnSalir.setVisibility(View.GONE);
+
             return true;
         }
         return false;
