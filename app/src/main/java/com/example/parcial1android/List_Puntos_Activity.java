@@ -56,16 +56,14 @@ public class List_Puntos_Activity extends AppCompatActivity {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View v, int posicion, long id) {
                         gestionUbicaciones.buscar(listaUbicaciones.get(posicion).getUsername_fk(), listaUbicaciones.get(posicion).getNombre());
-                        ir();
+                        gestionUsuario.buscaNombre(listaUbicaciones.get(posicion).getUsername_fk());
+                        Intent intent = new Intent(v.getContext(), Map_Activity.class);
+                        startActivity(intent);
                     }
                 });
     }
 
-    public void Mapa(View v){
-        ir();
-    }
-
-    public void ir(){
+    public void Mapa(View v) {
         Intent intent = new Intent(this, Map_Activity.class);
         startActivity(intent);
     }

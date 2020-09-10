@@ -1,21 +1,15 @@
 package com.example.parcial1android;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.location.Address;
-import android.location.Geocoder;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.EditText;
 
 import com.example.parcial1android.Controlador.CtlUbicacion;
 import com.example.parcial1android.Controlador.CtlUsuario;
@@ -26,19 +20,15 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Map_Activity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener, SensorEventListener, GoogleMap.OnMarkerClickListener {
 
     private GoogleMap mMap;
-    private String nombreUbicacion;
     private float zoom;
 
     Button btnSalir,btnEditar,btnListar,btnAlejar;
@@ -75,19 +65,6 @@ public class Map_Activity extends FragmentActivity implements OnMapReadyCallback
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
-        /*Cuando llega de lista puntos*/
-        try{
-            if(!nombreUbicacion.equals("")){
-                Ubicacion ubicacion = ctlUbicacion.buscar(ctlUsuario.getUsuario().getUsername(),nombreUbicacion);
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(ubicacion.getLatitud(),ubicacion.getLongitud()),10));
-                mMap.getUiSettings().setZoomControlsEnabled(false);
-                btnListar.setVisibility(View.GONE);btnSalir.setVisibility(View.GONE);btnEditar.setVisibility(View.VISIBLE);btnAlejar.setVisibility(View.VISIBLE);
-            }
-        }catch (Exception e){
-
-        }
-
     }
 
     @Override
@@ -95,14 +72,23 @@ public class Map_Activity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
         mMap.getUiSettings().setCompassEnabled(true);// visualizar la brujula
         listaUbicaciones =  ctlUbicacion.listaUbicacionesUsuario(usuario.getUsername());
-
+        /*Cuando llega de lista puntos*/
+        if(recibirUbicacion!=null){
+            float zoomLevel = 5.0f; //This goes up to 21
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(recibirUbicacion.getLatitud(),recibirUbicacion.getLongitud()),zoomLevel));
+            mMap.getUiSettings().setZoomControlsEnabled(true);
+            btnListar.setVisibility(View.GONE);
+            btnSalir.setVisibility(View.GONE);
+            btnEditar.setVisibility(View.VISIBLE);
+            btnAlejar.setVisibility(View.VISIBLE);
+        }
         for (int i = 0; i < listaUbicaciones.size();i++){
             for (int x = 0; x < colores.length;x++){
                 if(listaUbicaciones.get(i).getColor()==x){
-                    mMap.addMarker(new MarkerOptions().position(new LatLng(listaUbicaciones.get(i).getLatitud(),listaUbicaciones.get(i).getLongitud())).icon(
-                            BitmapDescriptorFactory.defaultMarker(colores[x])).title(listaUbicaciones.get(i).getNombre())// titulo del marcador
-                            .snippet(listaUbicaciones.get(i).getDescripcion())
-                            .visible(true));
+                    mMap.addMarker(new MarkerOptions().position(new LatLng(listaUbicaciones.get(i).getLatitud(),listaUbicaciones.get(i).getLongitud()))
+                            .icon(BitmapDescriptorFactory.defaultMarker(colores[x]))
+                            .title(listaUbicaciones.get(i).getNombre())// titulo del marcador
+                            .snippet(listaUbicaciones.get(i).getDescripcion()));
                 }
             }
         }
@@ -143,9 +129,21 @@ public class Map_Activity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public void alejar(View view){
-        mMap.getUiSettings().setZoomControlsEnabled(true);
+        float zoomLevel = 2.0f;//This goes up to 21
+        Ubicacion xUbicacion;
+        if(recibirUbicacion!=null){
+            xUbicacion = recibirUbicacion;
+        }else{
+            xUbicacion = ctlUbicacion.getUbicacion();
+        }
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(xUbicacion.getLatitud(),xUbicacion.getLongitud()),zoomLevel));
+        mMap.getUiSettings().setZoomControlsEnabled(false);
         mMap.resetMinMaxZoomPreference();
-        btnListar.setVisibility(View.VISIBLE);btnSalir.setVisibility(View.VISIBLE);btnEditar.setVisibility(View.GONE);btnAlejar.setVisibility(View.GONE);
+        btnListar.setVisibility(View.VISIBLE);
+        btnSalir.setVisibility(View.VISIBLE);
+        btnEditar.setVisibility(View.GONE);
+        btnAlejar.setVisibility(View.GONE);
+        ctlUbicacion.setUbicacion(null);
     }
 
     public void salir(View view){
@@ -181,18 +179,22 @@ public class Map_Activity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public boolean onMarkerClick(Marker marker) {
+        float zoomLevel = 5.0f; //This goes up to 21
         if(ctlUbicacion.buscar(usuario.getUsername(),marker.getTitle())!=null){
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), zoomLevel));
             btnEditar.setVisibility(View.VISIBLE);
             btnAlejar.setVisibility(View.VISIBLE);
             btnListar.setVisibility(View.GONE);
             btnSalir.setVisibility(View.GONE);
-
-            return true;
         }
         return false;
     }
     public void editar(View v){
         Intent intent = new Intent(this, RegistroPunto_Activity.class);
         startActivity(intent);
+    }
+    // Return null here, so that getInfoContents() is called next.
+    public View getInfoWindow(Marker arg0) {
+        return null;
     }
 }

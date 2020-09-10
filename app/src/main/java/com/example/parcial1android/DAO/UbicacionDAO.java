@@ -53,7 +53,7 @@ public class UbicacionDAO {
 
     public boolean modificar(Ubicacion ubicacion) {
         String tabla = "ubicacion";
-        String condicion = "username ='" + ubicacion.getUsername_fk()+"' and id_ubicacion="+ubicacion.getId_ubicacion();
+        String condicion = "username_fk ='" + ubicacion.getUsername_fk()+"' and latitud="+ubicacion.getLatitud()+" and longitud="+ubicacion.getLongitud()+"";
 
         ContentValues registro = new ContentValues();
 

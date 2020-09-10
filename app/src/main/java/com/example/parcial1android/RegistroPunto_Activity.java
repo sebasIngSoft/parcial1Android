@@ -15,8 +15,6 @@ import com.example.parcial1android.Controlador.CtlUbicacion;
 import com.example.parcial1android.Controlador.CtlUsuario;
 import com.example.parcial1android.Modelo.Ubicacion;
 
-import java.util.ArrayList;
-
 public class RegistroPunto_Activity extends AppCompatActivity {
 
     private EditText txtNombrePunto,txtDescripcion;
@@ -40,29 +38,29 @@ public class RegistroPunto_Activity extends AppCompatActivity {
         btnEditar = (Button) findViewById(R.id.btnEditar);
         btnGuardar = (Button) findViewById(R.id.btnGuardar);
         btnEliminar = (Button) findViewById(R.id.btnEliminar);
+        spnColor = (Spinner) findViewById(R.id.spnColor);
+        txtNombrePunto = (EditText) findViewById(R.id.txtNombrePunto);
+        txtDescripcion = (EditText) findViewById(R.id.txtDescripcion);
 
         ctlUbicacion = new CtlUbicacion(this);
         ctlUsuario = new CtlUsuario(this);
 
 
-        recibirUbicacion = (Ubicacion) ctlUbicacion.getUbicacion();
+        recibirUbicacion = ctlUbicacion.getUbicacion();
         if(recibirUbicacion!=null){
+            System.out.println(recibirUbicacion.getNombre());
             btnEditar.setVisibility(View.VISIBLE);
             btnEliminar.setVisibility(View.VISIBLE);
             btnGuardar.setVisibility(View.GONE);
             cargarDatos();
         }
-        spnColor = (Spinner) findViewById(R.id.spnColor);
-        txtNombrePunto = (EditText) findViewById(R.id.txtNombrePunto);
-        txtDescripcion = (EditText) findViewById(R.id.txtDescripcion);
-
         cargarColores();
     }
 
     private void cargarDatos() {
         txtNombrePunto.setText(recibirUbicacion.getNombre());
         txtDescripcion.setText(recibirUbicacion.getDescripcion());
-        for(int i=0;0<10;i++){
+        for(int i=0;i<10;i++){
             if(i==recibirUbicacion.getColor()){
                 spnColor.setSelection(i);
             }
@@ -96,12 +94,14 @@ public class RegistroPunto_Activity extends AppCompatActivity {
         if (txtNombrePunto.getText().toString().equals("") || txtDescripcion.getText().toString().equals("")){
             Toast.makeText(this,"Por favor complete los campos",Toast.LENGTH_SHORT).show();
         }else{
+            System.out.println();
             if (ctlUbicacion.modificar(recibirUbicacion.getId_ubicacion(), txtNombrePunto.getText().toString(),txtDescripcion.getText().toString()
-            ,spnColor.getSelectedItemPosition(),recibirUbicacion.getLatitud(),recibirUbicacion.getLatitud(), recibirUbicacion.getUsername_fk())){
+            ,spnColor.getSelectedItemPosition(),recibirUbicacion.getLatitud(),recibirUbicacion.getLongitud(), recibirUbicacion.getUsername_fk())){
                 Toast.makeText(this,"Modificacion Exitosa",Toast.LENGTH_SHORT).show();
                 btnEditar.setVisibility(View.GONE);
                 btnEliminar.setVisibility(View.GONE);
                 btnGuardar.setVisibility(View.VISIBLE);
+                ctlUbicacion.setUbicacion(null);
                 Intent intent = new Intent(this, Map_Activity.class);
                 startActivity(intent);
             }else{
@@ -115,10 +115,15 @@ public class RegistroPunto_Activity extends AppCompatActivity {
             btnEditar.setVisibility(View.GONE);
             btnEliminar.setVisibility(View.GONE);
             btnGuardar.setVisibility(View.VISIBLE);
+            ctlUbicacion.setUbicacion(null);
             Intent intent = new Intent(this, Map_Activity.class);
             startActivity(intent);
         }else{
             Toast.makeText(this,"No se pudo eliminar",Toast.LENGTH_SHORT).show();
         }
+    }
+    public void regresar(View v){
+        Intent intent = new Intent(this, Map_Activity.class);
+        startActivity(intent);
     }
 }

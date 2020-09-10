@@ -57,4 +57,20 @@ public class UsuarioDAO {
         registro.put("password", usuario.getPassword());
         return conex.ejecutarUpdate(tabla, condicion, registro);
     }
+
+    public Usuario buscarNombre(String username) {
+        Usuario usuario = null;
+        String consulta = "select nombre, apellido, username, password "
+                + "from usuario where "
+                + "username = '" + username + "'";
+        Cursor temp = conex.ejecutarSearch(consulta);
+
+        if (temp.getCount() > 0) {
+            temp.moveToFirst();
+            usuario = new Usuario(temp.getString(0),
+                    temp.getString(1), temp.getString(2),temp.getString(3));
+        }
+        conex.cerrarConexion();
+        return usuario;
+    }
 }

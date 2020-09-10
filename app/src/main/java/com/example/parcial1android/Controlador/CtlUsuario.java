@@ -33,7 +33,10 @@ public class CtlUsuario implements Serializable {
         usuario = dao.buscar(username,password);
         return usuario;
     }
-
+    public Usuario buscaNombre(String username){
+        usuario = dao.buscarNombre(username);
+        return usuario;
+    }
     public boolean eliminar(String username){
         Usuario usuario = new Usuario("","",username,"");
         return dao.eliminar(usuario);
