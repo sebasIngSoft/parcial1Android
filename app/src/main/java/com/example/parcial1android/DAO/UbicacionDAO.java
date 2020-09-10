@@ -53,16 +53,13 @@ public class UbicacionDAO {
 
     public boolean modificar(Ubicacion ubicacion) {
         String tabla = "ubicacion";
-        String condicion = "username_fk ='" + ubicacion.getUsername_fk()+"' and latitud="+ubicacion.getLatitud()+" and longitud="+ubicacion.getLongitud()+"";
+        String condicion = "username_fk ='" + ubicacion.getUsername_fk()+"' and id_ubicacion=" +ubicacion.getId_ubicacion()+"";
 
         ContentValues registro = new ContentValues();
 
         registro.put("nombre", ubicacion.getNombre());
         registro.put("descripcion", ubicacion.getDescripcion());
         registro.put("color", ubicacion.getColor());
-        registro.put("latitud", ubicacion.getLatitud());
-        registro.put("longitud", ubicacion.getLongitud());
-        registro.put("username_fk", ubicacion.getUsername_fk());
         return conex.ejecutarUpdate(tabla, condicion, registro);
     }
 

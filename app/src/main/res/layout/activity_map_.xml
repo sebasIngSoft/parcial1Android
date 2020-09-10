@@ -18,7 +18,28 @@
     <TableRow
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="top|center_vertical"/>
+        android:layout_marginTop="10dp"
+        android:gravity="center_vertical">
+
+        <Button
+            android:id="@+id/btnBuscar"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/btn_redondo_azul"
+            android:onClick="buscarDireccion"
+            android:text="BUSCAR" />
+
+        <EditText
+            android:id="@+id/txtLugar"
+            android:layout_width="300dp"
+            android:layout_height="40dp"
+            android:background="#9CF8F6F6"
+            android:backgroundTint="#852196F3"
+            android:ems="10"
+            android:hint="lugar,pais"
+            android:inputType="textPersonName" />
+    </TableRow>
 
     <Button
         android:id="@+id/btnListar"

@@ -44,7 +44,7 @@ public class RegistroPunto_Activity extends AppCompatActivity {
 
         ctlUbicacion = new CtlUbicacion(this);
         ctlUsuario = new CtlUsuario(this);
-
+        cargarColores();
 
         recibirUbicacion = ctlUbicacion.getUbicacion();
         if(recibirUbicacion!=null){
@@ -54,17 +54,13 @@ public class RegistroPunto_Activity extends AppCompatActivity {
             btnGuardar.setVisibility(View.GONE);
             cargarDatos();
         }
-        cargarColores();
+
     }
 
     private void cargarDatos() {
         txtNombrePunto.setText(recibirUbicacion.getNombre());
         txtDescripcion.setText(recibirUbicacion.getDescripcion());
-        for(int i=0;i<10;i++){
-            if(i==recibirUbicacion.getColor()){
-                spnColor.setSelection(i);
-            }
-        }
+        spnColor.setSelection(recibirUbicacion.getColor());
     }
 
     public void cargarColores() {
